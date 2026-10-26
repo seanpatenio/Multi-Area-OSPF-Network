@@ -1,0 +1,29 @@
+en
+conf t
+ho BR4
+no ip domain-lookup
+line vty 0 15
+logging sync
+exit
+int l0
+ip add 7.7.7.7 255.255.255.255
+no shut
+int g0/1
+ip add 10.2.2.1 255.255.255.0
+no shut
+int g0/0
+ip add 10.2.0.10 255.255.255.252
+no shut
+int g0/2
+ip add 10.2.0.6 255.255.255.252
+no shut
+ex
+router ospf 7
+network 10.2.2.0 0.0.0.255 area 2
+network 10.2.0.8 0.0.0.3 area 2
+network 10.2.0.4 0.0.0.3 area 2
+network 7.7.7.7 0.0.0.0 area 2
+auto-cost reference-bandwidth 100000
+passive-int l0
+ex
+do copy run start

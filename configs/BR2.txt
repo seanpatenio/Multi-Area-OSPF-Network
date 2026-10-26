@@ -1,0 +1,28 @@
+en
+conf t
+ho BR2
+no ip domain-lookup
+line vty 0 15
+logging sync
+exit
+int l0
+ip add 5.5.5.5 255.255.255.255
+no shut
+int g0/1
+ip add 10.1.2.1 255.255.255.0
+no shut
+int g0/0
+ip add 10.1.0.10 255.255.255.252
+no shut
+int g0/2
+ip add 10.1.0.6 255.255.255.252
+no shut
+ex
+router ospf 5
+network 10.1.2.0 0.0.0.255 area 1
+network 10.1.0.8 0.0.0.3 area 1
+network 5.5.5.5 0.0.0.0 area 1
+network 10.1.0.4 0.0.0.3 area 1
+auto-cost reference-bandwidth 100000
+passive-int l0
+do copy run start

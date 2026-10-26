@@ -1,0 +1,29 @@
+en
+conf t
+ho R1
+no ip domain-lookup
+line vty 0 15
+logging sync
+exit
+int l0
+ip add 1.1.1.1 255.255.255.255
+no shut
+int g0/1
+ip add 10.0.0.1 255.255.255.252
+no shut
+int g0/2
+ip add 10.0.0.5 255.255.255.252
+no shut
+int g0/0
+ip add 10.0.10.1 255.255.255.0
+no shut
+ex
+router ospf 1
+network 10.0.0.0 0.0.0.3 area 0
+network 10.0.0.4 0.0.0.3 area 0
+network 1.1.1.1 0.0.0.0 area 0
+network 10.0.10.0 0.0.0.255 area 0
+auto-cost reference-bandwidth 100000
+passive-int l0
+ex
+do copy run start
